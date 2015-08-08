@@ -8,6 +8,7 @@
 volatile int pwm_value = 0;
 volatile int prev_time = 0;
 volatile int personas = 0;
+int a=0;
 
 void setup() {
   Serial.begin(115200);
@@ -23,18 +24,30 @@ void setup() {
   attachInterrupt(13, contador2, RISING);
 }
  
-void loop() { }
+void loop() { 
+  
+  attachInterrupt(4, contador, RISING);
+  attachInterrupt(13, contador2, RISING);
+  if(a==1){
+  Serial.println(personas);
+  a=0;
+  }
+  }
  
 void contador() {
   personas++; 
-  Serial.println(personas);
   while(digitalRead(4))
   {
-    
+   detachInterrupt(13); 
   }
+  a=1;
 }
  
 void contador2() {
-  
-  personas--;  
+  personas--;
+  while(digitalRead(13))
+  {
+   detachInterrupt(4); 
+  }
+  a=1;  
 }
