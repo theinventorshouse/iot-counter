@@ -35,7 +35,7 @@ void loop() {
   }
  
 void contador() {
-  personas++; 
+  personas--; 
   while(digitalRead(4))
   {
    detachInterrupt(13); 
@@ -44,7 +44,7 @@ void contador() {
 }
  
 void contador2() {
-  personas--;
+  personas++;
   while(digitalRead(13))
   {
    detachInterrupt(4); 
