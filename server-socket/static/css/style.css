@@ -1,0 +1,23 @@
+#tweet{
+	width: 25em;
+}
+
+.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+.link {
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
+.panel{
+	transition: background .8s;
+}
+.panel:hover{
+	background: #D9E8F5;
+}
+
+a{
+	text-decoration: none !important;
+}
