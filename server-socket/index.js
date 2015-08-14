@@ -7,7 +7,7 @@ var RawSocket = require('./lib/raw-socket')
 var PeopleAction = require('./lib/action-model')
 
 mongoose.connect('mongodb://localhost/myappdatabase')
-RawSocket(3000, onCounterChange)
+RawSocket(27017, onCounterChange)
 
 function onCounterChange (newAction) {
   console.log('Action: ', newAction)
@@ -23,7 +23,7 @@ function onCounterChange (newAction) {
   })
 }
 
-var PORT = process.env.PORT || 8000
+var PORT = process.env.PORT || 8080
 
 var pub = __dirname + '/static'
 app.use(express.static(pub))
