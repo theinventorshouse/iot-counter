@@ -1,4 +1,8 @@
 # iot-counter
 People counting system
-Por Andres Sabas e Iddar Julio 2015
-con ESP8266 Version 12 HUZAAH de Adafruit
+
+###Autores:
+Andres Sabas <s@theinventorhouse.org>
+Iddar Olivares <iddar@dbug.mx>
+Creado: Julio 2015
+Contador de personas con ESP8266 Version 12 HUZAAH de Adafruit 

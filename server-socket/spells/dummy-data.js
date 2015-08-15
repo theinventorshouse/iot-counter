@@ -17,9 +17,9 @@ client.on('connect', function (connection) {
         var newAction = ['in', 'out'][Math.floor(Math.random() * 2)]
         console.log('Send data to server', newAction)
         connection.sendUTF(newAction)
-      }, Math.floor(Math.random() * 100000))
+      }, Math.floor(Math.random() * 1000))
     })(i)
   }
 })
 
-client.connect('ws://localhost:3000/', 'arduino')
+client.connect('ws://104.236.241.103:3000/', 'arduino')

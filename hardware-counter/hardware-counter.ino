@@ -1,5 +1,5 @@
-/* 
- * Autores: 
+/*
+ * Autores:
  * Andres Sabas <s@theinventorhouse.org>
  * Iddar Olivares <iddar@dbug.mx>
  * Creado: Julio 2015
@@ -31,18 +31,18 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
       USE_SERIAL.printf("[WSc] Connected to url: %s\n",  payload);
       break;
       // echo data back to Server
-      
-      
+
+
       if(a==1){
-        webSocket.sendTXT("in", 2);  
+        webSocket.sendTXT("in", 2);
       }
       break;
       if(a==2){
         webSocket.sendTXT("out", 3);
         a=0;
-        break;  
+        break;
       }
-      
+
   }
 
 }
@@ -52,10 +52,10 @@ void setup() {
   pinMode(4,INPUT);
   pinMode(13,INPUT);
   pinMode(5,OUTPUT);
-  
+
   attachInterrupt(4, inPeople, RISING);
   attachInterrupt(13, outPeople, RISING);
-  
+
   USE_SERIAL.begin(115200);
   USE_SERIAL.setDebugOutput(true);
 
@@ -67,13 +67,13 @@ void setup() {
     USE_SERIAL.flush();
     delay(1000);
   }
-      
+
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(100);
   }
 
-  webSocket.begin("192.168.0.43", 8080);
+  webSocket.begin("104.236.241.103", 8000);
   webSocket.onEvent(webSocketEvent);
 }
 
@@ -91,10 +91,10 @@ void inPeople() {
 
 void outPeople() {
   //webSocket.sendTXT("out", 3);
-   
+
   while(digitalRead(4))
    {
-     detachInterrupt(13); 
+     detachInterrupt(13);
    }
     a=2;
 }

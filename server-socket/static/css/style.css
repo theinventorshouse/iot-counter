@@ -49,3 +49,18 @@ a{
 .history .out{
 	color: #FD7400;
 }
+
+.footer{
+	margin-top: 3em;
+	font-size: 1.2em;
+}
+
+.footer a, .footer a:visited{
+	font-weight: bold;
+	text-decoration: none;
+	color: #000;
+}
+
+.footer a:hove{
+	text-decoration:underline;
+}

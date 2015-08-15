@@ -15,11 +15,10 @@ var ActivityGraph = React.createClass({
     var hours = _.filter(data, function (item) {
       return moment().isSame(item.created, 'hour')
     })
-    var actions = _.groupBy(hours, 'action')
-    var groupHours = _.groupBy(data, function (item) {
-      return moment(item.created).hours()
-    })
-    console.info('hours', groupHours)
+    var actions = _.isEmpty(hours) ? _.groupBy(data, 'action') : _.groupBy(hours, 'action')
+    // var groupHours = _.groupBy(data, function (item) {
+    //   return moment(item.created).hours()
+    // })
     c3.generate({
       bindto: '#activity-graph',
       data: {
