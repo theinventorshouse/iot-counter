@@ -1,6 +1,6 @@
 /* 
  * Autores: 
- * Andres Sabas <sabasjimenez@gmail.com>
+ * Andres Sabas <s@theinventorhouse.org>
  * Iddar Olivares <iddar@dbug.mx>
  * Creado: Julio 2015
  * Contador de personas con
@@ -15,10 +15,11 @@
 WebSocketsClient webSocket;
 
 
-const char* ssid     = "INFINITUM38FA71";
-const char* password = "22B578FD01";
+const char* ssid     = "Wifi Name";
+const char* password = "Wifi password";
 
 #define USE_SERIAL Serial
+int a=0;
 
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
 
@@ -29,6 +30,19 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
     case WStype_CONNECTED:
       USE_SERIAL.printf("[WSc] Connected to url: %s\n",  payload);
       break;
+      // echo data back to Server
+      
+      
+      if(a==1){
+        webSocket.sendTXT("in", 2);  
+      }
+      break;
+      if(a==2){
+        webSocket.sendTXT("out", 3);
+        a=0;
+        break;  
+      }
+      
   }
 
 }
@@ -37,11 +51,8 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
 void setup() {
   pinMode(4,INPUT);
   pinMode(13,INPUT);
-  pinMode(0,INPUT);
   pinMode(5,OUTPUT);
-  pinMode(12,OUTPUT);
   
-  attachInterrupt(0, inPeople, RISING);
   attachInterrupt(4, inPeople, RISING);
   attachInterrupt(13, outPeople, RISING);
   
@@ -62,7 +73,7 @@ void setup() {
     delay(100);
   }
 
-  webSocket.begin("192.168.1.65", 3000);
+  webSocket.begin("192.168.0.43", 8080);
   webSocket.onEvent(webSocketEvent);
 }
 
@@ -71,9 +82,19 @@ void loop() {
 }
 
 void inPeople() {
-  webSocket.sendTXT("in", 2);
+  while(digitalRead(13))
+   {
+    detachInterrupt(4);
+   }
+    a=1;
 }
 
 void outPeople() {
-  webSocket.sendTXT("out", 3);
+  //webSocket.sendTXT("out", 3);
+   
+  while(digitalRead(4))
+   {
+     detachInterrupt(13); 
+   }
+    a=2;
 }
