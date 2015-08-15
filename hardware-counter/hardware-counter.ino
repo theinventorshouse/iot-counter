@@ -19,7 +19,8 @@ const char* ssid     = "Wifi Name";
 const char* password = "Wifi password";
 
 #define USE_SERIAL Serial
-int a=0;
+//VAriable de Status
+int Status flag=0;
 
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
 
@@ -43,6 +44,8 @@ void setup() {
   attachInterrupt(13, inPeople, RISING);
   attachInterrupt(4, outPeople, RISING);
   digitalWrite(5,HIGH);
+
+  //Informacion de Depuración
   USE_SERIAL.begin(115200);
   USE_SERIAL.setDebugOutput(true);
 
@@ -59,26 +62,28 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(100);
   }
-
+  //Conexion al servidor
   webSocket.begin("104.236.241.103", 3000);
   webSocket.onEvent(webSocketEvent);
 }
 
 void loop() {
   webSocket.loop();
-  // echo data back to Server
-    
+  //Activacion de interrupciones
   attachInterrupt(13, inPeople, RISING);
   attachInterrupt(4, outPeople, RISING);
 
+  // Envio de datos a servidor
       if(a==1){
         webSocket.sendTXT("in", 2);
-        a=0;
+        Status flag=0;
+        //Depuracion
         USE_SERIAL.println("in");
       }
       if(a==2){
         webSocket.sendTXT("out", 3);
-        a=0;
+        Status flag=0;
+        //Depuracion
         USE_SERIAL.println("out");
       }
       delay(1500);
@@ -89,7 +94,7 @@ void inPeople() {
    {
     detachInterrupt(4);
    }
-    a=1;
+    Status flag=1;
 }
 
 void outPeople() {
@@ -97,5 +102,5 @@ void outPeople() {
    {
      detachInterrupt(13);
    }
-    a=2;
+    Statusflag=2;
 }
