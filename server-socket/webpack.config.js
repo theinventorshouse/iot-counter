@@ -1,13 +1,15 @@
 module.exports = {
-  entry: "./static/src/app.js",
+  entry: './static/src/app.js',
   output: {
-    filename: "static/js/bundle.js"
+    filename: 'static/js/bundle.js'
   },
   externals: {
-    // require("jquery") is external and available
+    // require('jquery') is external and available
     //  on the global var jQuery
-    "d3": "d3"
+    'd3': 'd3',
+    'c3': 'c3'
   },
+  devtool: 'source-map',
   module: {
     loaders: [
       {
@@ -17,4 +19,4 @@ module.exports = {
       }
     ]
   }
-};
+}
