@@ -36,10 +36,12 @@ function RawSocket (RawSocketPort, callback) {
     console.log((new Date()) + ' Connection accepted.')
 
     connection.on('message', function (message) {
+      console.log('DATa ', message);
       if (message.type === 'utf8') {
         // console.log('Received Message: ' + message.utf8Data)
         callback(message.utf8Data)
-        connection.sendUTF(message.utf8Data)
+        console.log(message.utf8Data)
+        //connection.sendUTF(message.utf8Data)
       } else if (message.type === 'binary') {
         console.log('Received Binary Message of ' + message.binaryData.length + ' bytes')
         connection.sendBytes(message.binaryData)

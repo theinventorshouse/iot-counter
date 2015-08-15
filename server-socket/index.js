@@ -11,9 +11,12 @@ RawSocket(27017, onCounterChange)
 
 function onCounterChange (newAction) {
   console.log('Action: ', newAction)
-  var newPeopleAction = new PeopleAction({
-    action: newAction
-  })
+  var action = {
+    action: newAction,
+    created: new Date().toISOString()
+  }
+  io.emit('newAction', action)
+  var newPeopleAction = new PeopleAction(action)
   newPeopleAction.save(function (error) {
     if (error) {
       console.log('\n\nError on save people action: ', error)
@@ -28,10 +31,21 @@ var PORT = process.env.PORT || 8080
 var pub = __dirname + '/static'
 app.use(express.static(pub))
 
+app.get('/activity', function (req, res) {
+  PeopleAction.find({})
+    .limit(100)
+    .sort('-created')
+    .select('action created')
+    .exec(function (error, peopleActions) {
+      if (error) {
+        console.log('\n\nError on read people action: ', error)
+      }
+      res.json(peopleActions)
+    })
+})
+
 io.on('connection', function (socket) {
   console.log('Socket.io Ok')
-  socket.on('tweet', function (tweetId) {
-  })
 })
 
 http.listen(PORT, function serverOn () {
