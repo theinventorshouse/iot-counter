@@ -28,21 +28,8 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
       USE_SERIAL.printf("[WSc] Disconnected!\n");
       break;
     case WStype_CONNECTED:
-      USE_SERIAL.printf("[WSc] Connected to url: %s\n",  payload);
+      USE_SERIAL.print("[WSc] Connected to url:dbug.mx ");
       break;
-      // echo data back to Server
-
-
-      if(a==1){
-        webSocket.sendTXT("in", 2);
-      }
-      break;
-      if(a==2){
-        webSocket.sendTXT("out", 3);
-        a=0;
-        break;
-      }
-
   }
 
 }
@@ -53,9 +40,9 @@ void setup() {
   pinMode(13,INPUT);
   pinMode(5,OUTPUT);
 
-  attachInterrupt(4, inPeople, RISING);
-  attachInterrupt(13, outPeople, RISING);
-
+  attachInterrupt(13, inPeople, RISING);
+  attachInterrupt(4, outPeople, RISING);
+  digitalWrite(5,HIGH);
   USE_SERIAL.begin(115200);
   USE_SERIAL.setDebugOutput(true);
 
@@ -73,12 +60,28 @@ void setup() {
     delay(100);
   }
 
-  webSocket.begin("104.236.241.103", 8000);
+  webSocket.begin("104.236.241.103", 3000);
   webSocket.onEvent(webSocketEvent);
 }
 
 void loop() {
   webSocket.loop();
+  // echo data back to Server
+    
+  attachInterrupt(13, inPeople, RISING);
+  attachInterrupt(4, outPeople, RISING);
+
+      if(a==1){
+        webSocket.sendTXT("in", 2);
+        a=0;
+        USE_SERIAL.println("in");
+      }
+      if(a==2){
+        webSocket.sendTXT("out", 3);
+        a=0;
+        USE_SERIAL.println("out");
+      }
+      delay(1500);
 }
 
 void inPeople() {
@@ -90,8 +93,6 @@ void inPeople() {
 }
 
 void outPeople() {
-  //webSocket.sendTXT("out", 3);
-
   while(digitalRead(4))
    {
      detachInterrupt(13);
