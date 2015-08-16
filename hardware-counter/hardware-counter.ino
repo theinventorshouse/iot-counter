@@ -12,18 +12,16 @@
 #include <WebSocketsClient.h>
 #include <Hash.h>
 
-WebSocketsClient webSocket;
-
-
-const char* ssid     = "Wifi Name";
-const char* password = "Wifi password";
-
+#define SSID "Wifi Name"
+#define PASSWORD "Wifi password"
+#define SERVER_PORT 3000
+#define SERVER_IP "104.236.241.103"
 #define USE_SERIAL Serial
-//VAriable de Status
-int Status flag=0;
+
+WebSocketsClient webSocket;
+int StatusFlag = 0;
 
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
-
   switch(type) {
     case WStype_DISCONNECTED:
       USE_SERIAL.printf("[WSc] Disconnected!\n");
@@ -34,7 +32,6 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t lenght) {
   }
 
 }
-
 
 void setup() {
   pinMode(4,INPUT);
@@ -58,12 +55,13 @@ void setup() {
     delay(1000);
   }
 
-  WiFi.begin(ssid, password);
+  WiFi.begin(SSID, PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     delay(100);
   }
+
   //Conexion al servidor
-  webSocket.begin("104.236.241.103", 3000);
+  webSocket.begin(SERVER_IP, SERVER_PORT);
   webSocket.onEvent(webSocketEvent);
 }
 
@@ -74,19 +72,19 @@ void loop() {
   attachInterrupt(4, outPeople, RISING);
 
   // Envio de datos a servidor
-      if(a==1){
-        webSocket.sendTXT("in", 2);
-        Status flag=0;
-        //Depuracion
-        USE_SERIAL.println("in");
-      }
-      if(a==2){
-        webSocket.sendTXT("out", 3);
-        Status flag=0;
-        //Depuracion
-        USE_SERIAL.println("out");
-      }
-      delay(1500);
+  if(StatusFlag == 1) {
+    webSocket.sendTXT("in", 2);
+    StatusFlag = 0;
+    USE_SERIAL.println("in");
+  }
+
+  if(StatusFlag == 2) {
+    webSocket.sendTXT("out", 3);
+    StatusFlag = 0;
+    USE_SERIAL.println("out");
+  }
+
+  delay(1500);
 }
 
 void inPeople() {
@@ -94,7 +92,8 @@ void inPeople() {
    {
     detachInterrupt(4);
    }
-    Status flag=1;
+
+   StatusFlag = 1;
 }
 
 void outPeople() {
@@ -102,5 +101,6 @@ void outPeople() {
    {
      detachInterrupt(13);
    }
-    Statusflag=2;
+
+    StatusFlag = 2;
 }
